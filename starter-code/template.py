@@ -243,11 +243,40 @@ def compare_models(prompt: str) -> dict:
             - "gemini_flash": { "response": str, "latency": float, "cost": float, "input_tokens": int, "output_tokens": int }
     """
     # TODO: Call call_openai with default gpt-4o model
+    call_openai_4o = call_openai(prompt, model=OPENAI_MODEL)
     # TODO: Call call_openai with gpt-4o-mini model
+    call_openai_4o_mini = call_openai(prompt, model="gpt-4o-mini")
     # TODO: Call call_gemini with default gemini-2.5-flash model
+    call_gemini_flash = call_gemini(prompt, model=GEMINI_MODEL)
     # TODO: Calculate costs exactly based on input and output token counts using PRICING_1M_TOKENS
     #       Formula: Cost = (input_tokens * input_rate_per_1M + output_tokens * output_rate_per_1M) / 1,000,000
+    cost_gpt4o = (call_openai_4o[2]['input_tokens'] * PRICING_1M_TOKENS[OPENAI_MODEL]['input'] + call_openai_4o[2]['output_tokens'] * PRICING_1M_TOKENS[OPENAI_MODEL]['output']) / 1_000_000
+    cost_gpt4o_mini = (call_openai_4o_mini[2]['input_tokens'] * PRICING_1M_TOKENS[OPENAI_MINI_MODEL]['input'] + call_openai_4o_mini[2]['output_tokens'] * PRICING_1M_TOKENS[OPENAI_MINI_MODEL]['output']) / 1_000_000
+    cost_gemini_flash = (call_gemini_flash[2]['input_tokens'] * PRICING_1M_TOKENS[GEMINI_MODEL]['input'] + call_gemini_flash[2]['output_tokens'] * PRICING_1M_TOKENS[GEMINI_MODEL]['output']) / 1_000_000
     # TODO: Assemble and return the comparison dictionary.
+    return {
+        "gpt4o": {
+            "response": call_openai_4o[0],
+            "latency": call_openai_4o[1],
+            "cost": cost_gpt4o,
+            "input_tokens": call_openai_4o[2]['input_tokens'],
+            "output_tokens": call_openai_4o[2]['output_tokens']
+        },
+        "gpt4o_mini": {
+            "response": call_openai_4o_mini[0],
+            "latency": call_openai_4o_mini[1],
+            "cost": cost_gpt4o_mini,
+            "input_tokens": call_openai_4o_mini[2]['input_tokens'],
+            "output_tokens": call_openai_4o_mini[2]['output_tokens']
+        },
+        "gemini_flash": {
+            "response": call_gemini_flash[0],
+            "latency": call_gemini_flash[1],
+            "cost": cost_gemini_flash,
+            "input_tokens": call_gemini_flash[2]['input_tokens'],
+            "output_tokens": call_gemini_flash[2]['output_tokens']
+        }
+    }
     raise NotImplementedError("Implement compare_models")
 
 
