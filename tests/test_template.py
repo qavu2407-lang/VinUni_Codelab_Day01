@@ -237,6 +237,18 @@ class TestBatchCompareAndFormat(unittest.TestCase):
             self.assertIn("Gemini-Flash", table)
             self.assertIn("Q1", table)
 
+    def test_table_truncates_and_keeps_one_line_per_row(self):
+        stats = {"response": "a|b\nc" + "x" * 100, "latency": 0.5, "cost": 0.00045, "input_tokens": 10, "output_tokens": 20}
+        result = {"prompt": "Q1", "gpt4o": stats, "gpt4o_mini": stats, "gemini_flash": stats}
+
+        lines = format_comparison_table([result]).split("\n")
+
+        self.assertEqual(len(lines), 5)  # header + separator + 3 models
+        self.assertIn("a\\|b c", lines[2])
+        self.assertIn("x" * 45 + "...", lines[2])
+        self.assertNotIn("x" * 46, lines[2])
+        self.assertIn("10/20", lines[2])
+
 
 class TestStreamingChatbot(unittest.TestCase):
 

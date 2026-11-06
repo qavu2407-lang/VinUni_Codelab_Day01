@@ -385,8 +385,26 @@ def format_comparison_table(results: list[dict]) -> str:
         A beautiful Markdown table string with columns:
         | Prompt | Model | Response (truncated) | Latency | Tokens (In/Out) | Cost (USD) |
     """
-    # TODO: Build and return the formatted table string. Truncate response to 50 chars for clean display.
-    raise NotImplementedError("Implement format_comparison_table")
+    labels = {"gpt4o": "GPT-4o", "gpt4o_mini": "GPT-4o-Mini", "gemini_flash": "Gemini-Flash"}
+
+    def cell(text: str) -> str:
+        # Newlines and pipes would break the table row.
+        return " ".join(text.split()).replace("|", "\\|")
+
+    rows = [
+        "| Prompt | Model | Response (truncated) | Latency | Tokens (In/Out) | Cost (USD) |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for result in results:
+        for key, label in labels.items():
+            stats = result[key]
+            response = stats["response"]
+            short = response[:50] + "..." if len(response) > 50 else response
+            rows.append(
+                f"| {cell(result['prompt'])} | {label} | {cell(short)} | {stats['latency']:.2f}s "
+                f"| {stats['input_tokens']}/{stats['output_tokens']} | ${stats['cost']:.6f} |"
+            )
+    return "\n".join(rows)
 
 
 # ---------------------------------------------------------------------------
