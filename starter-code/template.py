@@ -23,8 +23,9 @@ load_dotenv()
 PRICING_1M_TOKENS = {
     "gpt-4o": {"input": 5.00, "output": 20.00},
     "gpt-4o-mini": {"input": 0.150, "output": 0.600},
-    "gemini-2.5-flash": {"input": 0.075, "output": 0.300},
-    "gemini-2.5-pro": {"input": 1.25, "output": 5.00},
+    # "gemini-2.5-flash": {"input": 0.075, "output": 0.300},
+    "gemini-3.8-flash": {"input": 0.75, "output": 3.75},
+    "gemini-2.5-pro": {"input": 1.25, "output": 5.00}, # will be deprecated for new users
     "claude-3-5-sonnet": {"input": 3.00, "output": 15.00},
     "claude-3-5-haiku": {"input": 0.80, "output": 4.00},
 }
@@ -32,7 +33,8 @@ PRICING_1M_TOKENS = {
 # Standard Model Identifiers
 OPENAI_MODEL = "gpt-4o"
 OPENAI_MINI_MODEL = "gpt-4o-mini"
-GEMINI_MODEL = "gemini-2.5-flash"
+# GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.8-flash" # change to gemini-3.8-flash because gemini-2.5 models are deprecated for new users
 ANTHROPIC_MODEL = "claude-3-5-haiku"
 
 
@@ -425,7 +427,7 @@ if __name__ == "__main__":
         print(f"Skipping live API comparison test: {e}")
         print("Set your API keys to run manual tests.")
 
-    print("\n=== Starting Gemini 2.5 Chatbot (type 'quit' to exit) ===")
+    print("\n=== Starting Gemini 3.8 Chatbot (type 'quit' to exit) ===")
     try:
         streaming_chatbot()
     except Exception as e:

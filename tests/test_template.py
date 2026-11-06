@@ -173,7 +173,10 @@ class TestCompareModels(unittest.TestCase):
             self.assertAlmostEqual(result["gpt4o_mini"]["cost"], 0.0000135, places=8)
             
             # gemini-2.5-flash: (10 * 0.075 + 20 * 0.300) / 1,000,000 = 0.00000675
-            self.assertAlmostEqual(result["gemini_flash"]["cost"], 0.00000675, places=8)
+            # self.assertAlmostEqual(result["gemini_flash"]["cost"], 0.00000675, places=8)
+
+            # gemini-3.8-flash: (10 * 0.75 + 20 * 3.75) / 1,000,000 = 0.0000825
+            self.assertAlmostEqual(result["gemini_flash"]["cost"], 0.0000825, places=8)
 
 
 class TestRetryWithBackoff(unittest.TestCase):
