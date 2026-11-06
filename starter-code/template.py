@@ -99,7 +99,7 @@ def call_openai(
 
 
 # ---------------------------------------------------------------------------
-# Task 2 — Call Google Gemini 2.5 (Standard Practical Model)
+# Task 2 — Call Google Gemini 3.8 (Standard Practical Model)
 # ---------------------------------------------------------------------------
 def call_gemini(
     prompt: str,
@@ -109,12 +109,12 @@ def call_gemini(
     max_tokens: int = 256,
 ) -> tuple[str, float, dict]:
     """
-    Call the Google Gemini API (using Gemini 2.5 Flash as standard) and return
+    Call the Google Gemini API (using Gemini 3.8 Flash as standard) and return
     the response text, latency, and token usage stats.
 
     Args:
         prompt:      The user message to send.
-        model:       The Gemini model to use (default: gemini-2.5-flash).
+        model:       The Gemini model to use (default: gemini-3.8-flash).
         temperature: Sampling temperature.
         top_p:       Nucleus sampling threshold.
         max_tokens:  Maximum number of tokens to generate.
@@ -227,7 +227,7 @@ def call_anthropic(
 
 
 # ---------------------------------------------------------------------------
-# Task 4 — Compare Models (OpenAI GPT-4o vs OpenAI Mini vs Gemini 2.5 Flash)
+# Task 4 — Compare Models (OpenAI GPT-4o vs OpenAI Mini vs Gemini 3.8 Flash)
 # ---------------------------------------------------------------------------
 def compare_models(prompt: str) -> dict:
     """
