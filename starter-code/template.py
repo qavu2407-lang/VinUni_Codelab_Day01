@@ -297,8 +297,30 @@ def streaming_chatbot() -> None:
         - Check how to stream responses using client.chats or model.generate_content(..., stream=True).
         - Keep history limited to the last 3 turns to optimize context window and costs.
     """
-    # TODO: Setup interactive session, prompt user for input, stream response, and update history.
-    raise NotImplementedError("Implement streaming_chatbot")
+    from google import genai
+
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    history = []
+
+    while True:
+        user_input = input("You: ").strip()
+        if user_input.lower() in ("quit", "exit"):
+            break
+        if not user_input:
+            continue
+
+        # Sent as the last 3 completed turns plus the new message.
+        contents = history + [{"role": "user", "parts": [{"text": user_input}]}]
+        print("Gemini: ", end="", flush=True)
+        reply = ""
+        for chunk in client.models.generate_content_stream(model=GEMINI_MODEL, contents=contents):
+            text = chunk.text or ""  # chunk.text is None for chunks without text
+            print(text, end="", flush=True)
+            reply += text
+        print()
+
+        contents.append({"role": "model", "parts": [{"text": reply}]})
+        history = contents[-6:]  # 3 turns = 6 messages
 
 
 # ---------------------------------------------------------------------------

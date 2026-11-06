@@ -238,6 +238,28 @@ class TestStreamingChatbot(unittest.TestCase):
         except SystemExit:
             pass
 
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["q1", "", "q2", "q3", "q4", "q5", "exit"])
+    @patch("google.genai.Client")
+    def test_streams_and_keeps_last_3_turns(self, MockClient, mock_input, mock_print):
+        sent = []  # snapshot each request's messages as text
+
+        def fake_stream(model, contents):
+            sent.append([m["parts"][0]["text"] for m in contents])
+            return iter([MagicMock(text="a"), MagicMock(text=None), MagicMock(text="b")])
+
+        MockClient.return_value.models.generate_content_stream.side_effect = fake_stream
+
+        streaming_chatbot()
+
+        self.assertEqual(len(sent), 5)  # blank input is skipped
+        printed = [c.args[0] for c in mock_print.call_args_list if c.args]
+        self.assertEqual(printed.count("a"), 5)  # printed chunk by chunk
+        self.assertNotIn(None, printed)
+
+        # q5 goes out with exactly the 3 previous turns; q1 has been dropped.
+        self.assertEqual(sent[-1], ["q2", "ab", "q3", "ab", "q4", "ab", "q5"])
+
 
 if __name__ == "__main__":
     unittest.main()
