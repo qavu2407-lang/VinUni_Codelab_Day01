@@ -368,8 +368,7 @@ def batch_compare(prompts: list[str]) -> list[dict]:
         List of dicts, each being the compare_models result with an extra
         key "prompt" containing the original prompt string.
     """
-    # TODO: iterate over prompts, call compare_models, and inject the original "prompt".
-    raise NotImplementedError("Implement batch_compare")
+    return [{**compare_models(prompt), "prompt": prompt} for prompt in prompts]
 
 
 # ---------------------------------------------------------------------------
