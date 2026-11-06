@@ -12,6 +12,9 @@ Instructions:
 import os
 import time
 from typing import Any, Callable
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ---------------------------------------------------------------------------
 # Estimated costs per 1M INPUT & OUTPUT tokens (USD) as of March 2026
