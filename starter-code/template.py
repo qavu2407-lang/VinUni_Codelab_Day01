@@ -414,7 +414,7 @@ def format_comparison_table(results: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     print("=== Model Comparison Test ===")
-    test_prompt = "Hãy giải thích sự khác biệt giữa temperature và top_p bằng tiếng Việt ngắn gọn trong 2 câu."
+    test_prompt = "What's the weather like in Hanoi, Gia Lam today? Is it nice enough to go out?"
     try:
         # Note: Requires valid API keys set in environment variables
         result = compare_models(test_prompt)
