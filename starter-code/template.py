@@ -25,7 +25,8 @@ PRICING_1M_TOKENS = {
     "gpt-4o-mini": {"input": 0.150, "output": 0.600},
     # "gemini-2.5-flash": {"input": 0.075, "output": 0.300},
     "gemini-3.8-flash": {"input": 0.75, "output": 3.75},
-    "gemini-2.5-pro": {"input": 1.25, "output": 5.00}, # will be deprecated for new users
+    # "gemini-2.5-pro": {"input": 1.25, "output": 5.00}, # will be deprecated for new users
+    "gemini-3.5-flash-lite": {"input": 0.30, "output": 2.50},
     "claude-3-5-sonnet": {"input": 3.00, "output": 15.00},
     "claude-3-5-haiku": {"input": 0.80, "output": 4.00},
 }
