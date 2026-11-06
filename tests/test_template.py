@@ -202,6 +202,17 @@ class TestRetryWithBackoff(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             retry_with_backoff(permanent_fail, max_retries=2, base_delay=0.001)
 
+    @patch("time.sleep")
+    def test_backoff_doubles_and_raises_last_exception(self, mock_sleep):
+        errors = iter([ValueError("1"), ValueError("2"), ValueError("3"), ValueError("4")])
+
+        def fail():
+            raise next(errors)
+
+        with self.assertRaisesRegex(ValueError, "4"):  # 1 call + 3 retries
+            retry_with_backoff(fail, max_retries=3, base_delay=0.1)
+        self.assertEqual([c.args[0] for c in mock_sleep.call_args_list], [0.1, 0.2, 0.4])
+
 
 class TestBatchCompareAndFormat(unittest.TestCase):
 

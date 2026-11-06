@@ -346,8 +346,12 @@ def retry_with_backoff(
     Raises:
         The last exception raised by fn() after all retries are exhausted.
     """
-    # TODO: implement retry loop with exponential backoff
-    raise NotImplementedError("Implement retry_with_backoff")
+    for attempt in range(max_retries):
+        try:
+            return fn()
+        except Exception:
+            time.sleep(base_delay * 2 ** attempt)
+    return fn()  # final attempt: its exception propagates to the caller
 
 
 # ---------------------------------------------------------------------------
