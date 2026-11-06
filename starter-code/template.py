@@ -231,7 +231,7 @@ def call_anthropic(
 # ---------------------------------------------------------------------------
 def compare_models(prompt: str) -> dict:
     """
-    Call OpenAI (gpt-4o), OpenAI Mini (gpt-4o-mini), and Gemini 2.5 Flash (gemini-2.5-flash)
+    Call OpenAI (gpt-4o), OpenAI Mini (gpt-4o-mini), and Gemini 3.8 Flash (gemini-3.8-flash)
     with the same prompt and return a structured comparison dictionary.
 
     Calculate the exact USD token cost for input + output using the prices in PRICING_1M_TOKENS.
@@ -248,8 +248,8 @@ def compare_models(prompt: str) -> dict:
     # TODO: Call call_openai with default gpt-4o model
     call_openai_4o = call_openai(prompt, model=OPENAI_MODEL)
     # TODO: Call call_openai with gpt-4o-mini model
-    call_openai_4o_mini = call_openai(prompt, model="gpt-4o-mini")
-    # TODO: Call call_gemini with default gemini-2.5-flash model
+    call_openai_4o_mini = call_openai(prompt, model=OPENAI_MINI_MODEL)
+    # TODO: Call call_gemini with default gemini-3.8-flash model
     call_gemini_flash = call_gemini(prompt, model=GEMINI_MODEL)
     # TODO: Calculate costs exactly based on input and output token counts using PRICING_1M_TOKENS
     #       Formula: Cost = (input_tokens * input_rate_per_1M + output_tokens * output_rate_per_1M) / 1,000,000
@@ -284,14 +284,14 @@ def compare_models(prompt: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Task 5 — Streaming chatbot with Gemini 2.5 (Focus Model)
+# Task 5 — Streaming chatbot with Gemini 3.8 (Focus Model)
 # ---------------------------------------------------------------------------
 def streaming_chatbot() -> None:
     """
-    Run an interactive streaming chatbot in the terminal using Gemini 2.5.
+    Run an interactive streaming chatbot in the terminal using Gemini 3.8.
 
     Behaviour:
-        - Streams response tokens from Gemini 2.5 Flash as they arrive.
+        - Streams response tokens from Gemini 3.8 Flash as they arrive.
         - Maintains the last 3 turns of conversation history for context.
         - Typing 'quit' or 'exit' ends the session.
 
