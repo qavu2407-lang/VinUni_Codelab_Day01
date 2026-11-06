@@ -70,6 +70,28 @@ def call_openai(
     """
     # TODO: Import OpenAI, instantiate client, call chat.completions.create with parameters,
     #       measure execution start/end time, extract text and token usage, and return them.
+    from openai import OpenAI
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    start = time.time()
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=temperature,
+        top_p=top_p,
+        max_tokens=max_tokens,
+    )
+    end = time.time()
+    latency = end - start
+    response_text = response.choices[0].message.content
+    usage = {
+        "input_tokens": response.usage.prompt_tokens,
+        "output_tokens": response.usage.completion_tokens
+    }
+
+    text = response.choices[0].message.content or ""
+    return text, latency, usage
+
     raise NotImplementedError("Implement call_openai")
 
 
