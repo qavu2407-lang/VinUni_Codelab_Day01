@@ -140,6 +140,30 @@ def call_gemini(
     """
     # TODO: Initialize Gemini client, set config parameters, call generate_content,
     #       measure latency, extract response text and usage metadata, and return the tuple.
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    start = time.time()
+    gen_config = types.GenerateContentConfig(
+        temperature=temperature,
+        top_p=top_p,
+        max_output_tokens=max_tokens
+    )
+    response = client.models.generate_content(
+        model=model,
+        contents=prompt,
+        config=gen_config
+    )
+    end = time.time()
+    latency = end - start
+    usage = {
+        "input_tokens": response.usage_metadata.prompt_token_count,
+        "output_tokens": response.usage_metadata.candidates_token_count
+    }
+    text = response.text or ""
+    return text, latency, usage
+
     raise NotImplementedError("Implement call_gemini")
 
 
